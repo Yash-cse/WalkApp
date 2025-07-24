@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Validators\" />
+    <Folder Include="WalkApp.Domain.Validators\" />
   </ItemGroup>
 
   <ItemGroup>

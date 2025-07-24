@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using WalkApp.DAL.Repositories;
-using WalkApp.Domain.Dtos;
-using Region = WalkApp.Domain.Models.Region;
+using WalkApp.DAL.WalkApp.DAL.Repositories;
+using WalkApp.Domain.WalkApp.Domain.DTO;
+using Region = WalkApp.Domain.WalkApp.Domain.Models.Region;
 
-namespace WalkApp.API.Controllers
+namespace WalkApp.API.WalkApp.API.Controllers
 {
     // https://localhost:1234/api/regions
     [ApiController]

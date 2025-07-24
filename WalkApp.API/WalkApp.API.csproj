@@ -4,7 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AppDesignerFolder>WalkApp.API.Properties</AppDesignerFolder>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="WalkApp.API.Properties\WalkApp.API.Properties.launchSettings.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />

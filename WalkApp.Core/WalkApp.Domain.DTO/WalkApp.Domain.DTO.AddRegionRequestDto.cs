@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WalkApp.Domain.Dtos
+namespace WalkApp.Domain.WalkApp.Domain.DTO
 {
     public class AddRegionRequestDto
     {

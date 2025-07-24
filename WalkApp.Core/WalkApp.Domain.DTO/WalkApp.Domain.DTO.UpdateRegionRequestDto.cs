@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WalkApp.Domain.Models
+namespace WalkApp.Domain.WalkApp.Domain.DTO
 {
-    public class Region
+    public class UpdateRegionRequestDto
     {
-        public Guid Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string? RegionImageUrl { get; set; }
-
     }
 }

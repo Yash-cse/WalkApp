@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using WalkApp.Domain.Dtos;
-using WalkApp.Domain.Models;
+using WalkApp.Domain.WalkApp.Domain.DTO;
+using WalkApp.Domain.WalkApp.Domain.Models;
 
-namespace WalkApp.Domain.MappingProfiles
+namespace WalkApp.Domain.WalkApp.Domain.Profiles
 {
     public class AutoMapperProfiles : Profile
     {

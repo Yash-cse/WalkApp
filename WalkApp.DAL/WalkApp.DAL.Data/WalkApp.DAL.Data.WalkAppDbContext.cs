@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WalkApp.Domain.Models;
+using WalkApp.Domain.WalkApp.Domain.Models;
 
-namespace WalkApp.DAL.Data
+namespace WalkApp.DAL.WalkApp.DAL.Data
 {
     public class WalkAppDbContext : DbContext
     {

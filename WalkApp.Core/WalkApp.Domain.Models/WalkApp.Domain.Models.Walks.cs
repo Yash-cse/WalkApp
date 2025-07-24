@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WalkApp.Domain.Models
+namespace WalkApp.Domain.WalkApp.Domain.Models
 {
     public class Walks
     {

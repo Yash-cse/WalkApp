@@ -1,7 +1,6 @@
-﻿using WalkApp.Domain.Dtos;
-using Region = WalkApp.Domain.Models.Region;
+﻿using Region = WalkApp.Domain.WalkApp.Domain.Models.Region;
 
-namespace WalkApp.DAL.Repositories
+namespace WalkApp.DAL.WalkApp.DAL.Repositories
 {
     public interface IRegionRepository
     {

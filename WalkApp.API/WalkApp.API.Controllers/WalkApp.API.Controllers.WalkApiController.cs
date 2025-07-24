@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WalkApp.API.Controllers
+namespace WalkApp.API.WalkApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using WalkApp.DAL.Data;
-using WalkApp.DAL.Repositories;
-using WalkApp.Domain.MappingProfiles;
+using WalkApp.DAL.WalkApp.DAL.Data;
+using WalkApp.DAL.WalkApp.DAL.Repositories;
+using WalkApp.Domain.WalkApp.Domain.Profiles;
 
 
 var builder = WebApplication.CreateBuilder(args);
