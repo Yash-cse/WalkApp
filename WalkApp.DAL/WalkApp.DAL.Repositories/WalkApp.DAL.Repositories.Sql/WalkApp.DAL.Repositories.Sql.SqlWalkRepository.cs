@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using WalkApp.DAL.WalkApp.DAL.Data;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
-using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.New;
 using WalkApp.Domain.WalkApp.Domain.Models;
 
 namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
@@ -20,16 +20,32 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
             return await _dbContext.Walks.Include("Region").Include("Difficulty").ToListAsync();
         }
 
-        public async Task<Walks> GetWalkAsync(Guid id)
+        public async Task<Walks> GetWalkByIDAsync(Guid id)
         {
-          return  await _dbContext.Walks.FirstOrDefaultAsync(x => x.Id == id);
+          return  await _dbContext.Walks.Include("Region").Include("Difficulty").FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<Walks> CreateWalkAsync(Walks walk)
+        public async Task<Walks> CreateWalkAsync(Walks CreateWalk)
         {
-            await _dbContext.Walks.AddAsync(walk);
+            await _dbContext.Walks.AddAsync(CreateWalk);
             await _dbContext.SaveChangesAsync();
-            return walk;
+            return CreateWalk;
+        }
+
+        public async Task<Walks> UpdateWalkAsync(Guid id, Walks UpdateWalk)
+        {
+            var existingWalk = await _dbContext.Walks.FirstOrDefaultAsync(x => x.Id == id);
+            if (existingWalk == null) return null;
+
+            existingWalk.Name = UpdateWalk.Name;
+            existingWalk.Description = UpdateWalk.Description;
+            existingWalk.LengthInKm = UpdateWalk.LengthInKm;
+            existingWalk.WalkImageUrl = UpdateWalk.WalkImageUrl;
+            existingWalk.RegionId = UpdateWalk.RegionId;
+            existingWalk.DifficultyId = UpdateWalk.DifficultyId;
+
+            await _dbContext.SaveChangesAsync();
+            return existingWalk;
         }
 
         public async Task<Walks> DeleteWalkAsync(Guid id)

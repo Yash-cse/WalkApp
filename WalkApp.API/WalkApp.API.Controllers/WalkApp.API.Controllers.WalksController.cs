@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.AddRequest;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.New;
+using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.UpdateRequest;
 using WalkApp.Domain.WalkApp.Domain.Models;
 
 namespace WalkApp.API.WalkApp.API.Controllers
@@ -40,10 +41,10 @@ namespace WalkApp.API.WalkApp.API.Controllers
         //GET: https://localhost:7204/api/walk/get_walk/id
         [Route("get_walk/{id:Guid}")]
         [HttpGet]
-        public async Task<IActionResult> GetWalk([FromRoute] Guid id)
+        public async Task<IActionResult> GetWalkById([FromRoute] Guid id)
         {
             //Get data from domain 
-            var WalkDomain = await _walkRepository.GetWalkAsync(id);
+            var WalkDomain = await _walkRepository.GetWalkByIDAsync(id);
 
             //Map Domain to DTO
             var WalkDto = _mapper.Map<WalkDto>(WalkDomain);
@@ -70,6 +71,26 @@ namespace WalkApp.API.WalkApp.API.Controllers
             return Ok(walkDto);
         }
 
+        // Update Walk
+        //PUT: https://localhost:7204/api/walk/update_walk/id
+        [HttpPut]
+        [Route("update_walk/{id:Guid}")]
+        public async Task<IActionResult> UpdateWalk([FromRoute] Guid id, [FromBody] UpdateWalkRequestDto updateWalkRequest)
+        {
+            //Getting data from dto to domain
+            var walkDomain = _mapper.Map<Walks>(updateWalkRequest);
+
+            walkDomain = await _walkRepository.UpdateWalkAsync(id, walkDomain);
+            if (walkDomain == null) return NotFound();
+
+            //Mapping again from domain to dto
+            var walkDto = _mapper.Map<WalkDto>(walkDomain);
+
+            // return DTO to the client
+            return Ok(walkDto);
+        }
+
+
         // Delete Walk
         // DELETE: https://localhost:7204/api/walk/delete_walk/id
         [HttpDelete]
@@ -82,11 +103,10 @@ namespace WalkApp.API.WalkApp.API.Controllers
                 return NotFound();
 
             //using mapper
-            var walkDto = _mapper.Map<RegionDto>(walkDomain);
+            var walkDto = _mapper.Map<WalkDto>(walkDomain);
 
             //Return Dto back to client
             return Ok(walkDto);
         }
-
     }
 }

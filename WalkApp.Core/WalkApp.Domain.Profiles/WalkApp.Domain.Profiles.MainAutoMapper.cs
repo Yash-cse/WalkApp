@@ -22,6 +22,7 @@ namespace WalkApp.Domain.WalkApp.Domain.Profiles
 
             //Difficulty
             CreateMap<Difficulty, DifficultyDto>().ReverseMap();
+
         }
     }
 }
