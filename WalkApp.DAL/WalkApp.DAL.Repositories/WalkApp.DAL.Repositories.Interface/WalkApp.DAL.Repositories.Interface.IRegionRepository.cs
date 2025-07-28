@@ -1,6 +1,6 @@
 ﻿using Region = WalkApp.Domain.WalkApp.Domain.Models.Region;
 
-namespace WalkApp.DAL.WalkApp.DAL.Repositories
+namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface
 {
     public interface IRegionRepository
     {

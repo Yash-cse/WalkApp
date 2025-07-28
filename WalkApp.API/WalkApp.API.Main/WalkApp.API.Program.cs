@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using WalkApp.DAL.WalkApp.DAL.Data;
-using WalkApp.DAL.WalkApp.DAL.Repositories;
+using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
+using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql;
 using WalkApp.Domain.WalkApp.Domain.Profiles;
 
 
@@ -20,10 +20,13 @@ Opt.UseSqlServer(builder.Configuration.GetConnectionString("WalkAppConnectionStr
 
 // Repositories 
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
+builder.Services.AddScoped<IWalkRepository, SqlWalkRepository>();
+builder.Services.AddScoped<IDifficultyRepository, SqlDifficultyRepository>();
+
 
 // Automapper
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MainAutoMapper>());
 
-builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AutoMapperProfiles>());
 
 
 var app = builder.Build();

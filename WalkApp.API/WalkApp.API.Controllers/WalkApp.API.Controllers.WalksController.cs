@@ -1,0 +1,92 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
+using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.AddRequest;
+using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.New;
+using WalkApp.Domain.WalkApp.Domain.Models;
+
+namespace WalkApp.API.WalkApp.API.Controllers
+{
+    [Route("api/walk")]
+    [ApiController]
+    public class WalkApiController : ControllerBase
+    {
+        private readonly IMapper _mapper;
+        private readonly IWalkRepository _walkRepository;
+
+        public WalkApiController(IMapper mapper, IWalkRepository walkRepository)
+        {
+            _mapper = mapper;
+            _walkRepository = walkRepository;
+        }
+
+        //GET All
+        //GET: https://localhost:7204/api/walk
+        [Route("get_all_walks")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllWalks()
+        {
+            //Get data from domain 
+            var WalkDomain = await _walkRepository.GetAllWalkAsync();
+
+            //Map Domain to DTO
+            var WalkDto = _mapper.Map<List<WalkDto>>(WalkDomain);
+
+            //return dto back to the user 
+            return Ok(WalkDto);
+        }
+
+        //GET By ID
+        //GET: https://localhost:7204/api/walk/get_walk/id
+        [Route("get_walk/{id:Guid}")]
+        [HttpGet]
+        public async Task<IActionResult> GetWalk([FromRoute] Guid id)
+        {
+            //Get data from domain 
+            var WalkDomain = await _walkRepository.GetWalkAsync(id);
+
+            //Map Domain to DTO
+            var WalkDto = _mapper.Map<WalkDto>(WalkDomain);
+
+            //return dto back to the user 
+            return Ok(WalkDto);
+        }
+
+        // Create Walk
+        // POST: https://localhost:7204/api/walk/create_walk
+        [HttpPost]
+        [Route("create_walk")]
+        public async Task<IActionResult> CreateWalk([FromBody] AddWalkRequestDto addWalkRequestDto)
+        {
+            // Map DTO to domain model
+            var walkDomain = _mapper.Map<Walks>(addWalkRequestDto);
+
+            await _walkRepository.CreateWalkAsync(walkDomain);
+
+            //Map domain model to DTO
+            var walkDto = _mapper.Map<WalkDto>(walkDomain);
+
+            // return DTO to the client
+            return Ok(walkDto);
+        }
+
+        // Delete Walk
+        // DELETE: https://localhost:7204/api/walk/delete_walk/id
+        [HttpDelete]
+        [Route("delete_walk/{id:Guid}")]
+        public async Task<IActionResult> DeleteWalk([FromRoute] Guid id)
+        {
+            var walkDomain = await _walkRepository.DeleteWalkAsync(id);
+
+            if (walkDomain == null)
+                return NotFound();
+
+            //using mapper
+            var walkDto = _mapper.Map<RegionDto>(walkDomain);
+
+            //Return Dto back to client
+            return Ok(walkDto);
+        }
+
+    }
+}

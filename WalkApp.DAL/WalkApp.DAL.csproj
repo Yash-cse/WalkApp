@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="WalkApp.DAL.Repositories\WalkApp.DAL.Repositories.IRegionRepository.cs~RF4cb9644.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WalkApp.APP\WalkApp.APP.csproj" />
     <ProjectReference Include="..\WalkApp.Core\WalkApp.Domain.csproj" />
   </ItemGroup>

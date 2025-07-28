@@ -1,21 +1,22 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using WalkApp.DAL.WalkApp.DAL.Repositories;
-using WalkApp.Domain.WalkApp.Domain.DTO;
+using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
+using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.AddRequest;
+using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.New;
+using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.UpdateRequest;
 using Region = WalkApp.Domain.WalkApp.Domain.Models.Region;
 
 namespace WalkApp.API.WalkApp.API.Controllers
 {
-    // https://localhost:1234/api/regions
     [ApiController]
-    [Route("api/[controller]")]
-    public class RegionsController : ControllerBase
+    [Route("api/region")]
+    public class RegionApiController : ControllerBase
     {
         // private readonly WalkAppDbContext _context;
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
 
-        public RegionsController(/* WalkAppDbContext context, */ IRegionRepository regionRepository, IMapper mapper)
+        public RegionApiController(/* WalkAppDbContext context, */ IRegionRepository regionRepository, IMapper mapper)
         {
             // _context = context;
             _regionRepository = regionRepository;
@@ -23,8 +24,9 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         // Get All Regions 
-        // GET: https://localhost:7204/api/Regions
+        // GET: https://localhost:7204/api/region/get_all_regions
         [HttpGet]
+        [Route("get_all_regions")]
         public async Task<IActionResult> GetAllRegions()
         {
             //Get data from DB - core models
@@ -50,9 +52,9 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         // Get Region by id
-        // GET: https://localhost:7204/api/Regions/{id}
+        // GET: https://localhost:7204/api/region/get_region/id
         [HttpGet]
-        [Route("{id:Guid}")]
+        [Route("get_region/{id:Guid}")]
         public async Task<IActionResult> GetRegionById([FromRoute] Guid id)
         {
             //var regions = _context.Regions.Find(id);
@@ -77,8 +79,9 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         //Create New Region
-        //Post: https://localhost:7204/api/Regions
+        //Post: https://localhost:7204/api/region/create_region
         [HttpPost]
+        [Route("create_region")]
         public async Task<IActionResult> CreateRegion([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
             //Map or convert DTO TO DOMAIN MODEL
@@ -111,9 +114,9 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         //Update Region
-        //PUT: https://localhost:7204/api/Regions/{id}
+        //PUT: https://localhost:7204/api/region/update_region/id
         [HttpPut]
-        [Route("{id:Guid}")]
+        [Route("update_region/{id:Guid}")]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
             //Map Dto to domain model
@@ -149,9 +152,9 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         //Delete Region
-        //DELETE: https://localhost:7204/api/Regions/{id}
+        //DELETE: https://localhost:7204/api/region/delete_region/id
         [HttpDelete]
-        [Route("{id:Guid}")]
+        [Route("delete_region/{id:Guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             //Check if the region exists
