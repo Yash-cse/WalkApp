@@ -4,7 +4,7 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interfac
 {
     public interface IWalkRepository
     {
-        Task<List<Walks>> GetAllWalkAsync();
+        Task<List<Walks>> GetAllWalkAsync(string? filterOn = null, string? filterQuery = null);
         Task<Walks> GetWalkByIDAsync(Guid id);
         Task<Walks> CreateWalkAsync(Walks CreateWalk);
         Task<Walks> UpdateWalkAsync(Guid id, Walks UpdateWalk);

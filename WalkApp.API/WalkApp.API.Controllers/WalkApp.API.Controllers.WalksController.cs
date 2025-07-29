@@ -26,10 +26,10 @@ namespace WalkApp.API.WalkApp.API.Controllers
         //GET: https://localhost:7204/api/walk
         [Route("get_all_walks")]
         [HttpGet]
-        public async Task<IActionResult> GetAllWalks()
+        public async Task<IActionResult> GetAllWalks([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
         {
             //Get data from domain 
-            var WalkDomain = await _walkRepository.GetAllWalkAsync();
+            var WalkDomain = await _walkRepository.GetAllWalkAsync(filterOn,filterQuery);
 
             //Map Domain to DTO
             var WalkDto = _mapper.Map<List<WalkDto>>(WalkDomain);
@@ -58,7 +58,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         // POST: https://localhost:7204/api/walk/create_walk
         [HttpPost]
         [Route("create_walk")]
-        [ModelStateAttribute]
+        [ModelState]
         public async Task<IActionResult> CreateWalk([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
             // Map DTO to domain model
@@ -77,7 +77,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         //PUT: https://localhost:7204/api/walk/update_walk/id 
         [HttpPut]
         [Route("update_walk/{id:Guid}")]
-        [ModelStateAttribute]
+        [ModelState]
         public async Task<IActionResult> UpdateWalk([FromRoute] Guid id, [FromBody] UpdateWalkRequestDto updateWalkRequest)
         {
             //Getting data from dto to domain

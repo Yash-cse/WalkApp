@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using WalkApp.DAL.WalkApp.DAL.Data;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.Domain.WalkApp.Domain.Models;
@@ -15,9 +14,32 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
             _dbContext = dbContext;
         }
 
-        public async Task<List<Walks>> GetAllWalkAsync()
+        public async Task<List<Walks>> GetAllWalkAsync(string? filterOn = null, string? filterQuery = null)
         {
-            return await _dbContext.Walks.Include("Region").Include("Difficulty").ToListAsync();
+            //return await _dbContext.Walks.Include("Region").Include("Difficulty").ToListAsync();
+            var Walks = _dbContext.Walks.Include("Region").Include("Difficulty").AsQueryable();
+
+            //filtering the data 
+            if(string.IsNullOrWhiteSpace(filterOn)==false && string.IsNullOrWhiteSpace(filterQuery)==false)
+            {
+                if(filterOn.Equals("name", StringComparison.OrdinalIgnoreCase))
+                {
+                    Walks = Walks.Where(x => x.Name.Contains(filterQuery));
+                }
+                else if (filterOn.Equals("Description", StringComparison.OrdinalIgnoreCase))
+                {
+                    Walks = Walks.Where(x => x.Description.Contains(filterQuery));
+                }
+                else if (filterOn.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
+                {
+                    if(double.TryParse(filterQuery, out double length))
+                    {
+                        Walks = Walks.Where(x => x.LengthInKm <= length);
+                    }
+                }
+            }
+
+            return await Walks.ToListAsync();
         }
 
         public async Task<Walks> GetWalkByIDAsync(Guid id)

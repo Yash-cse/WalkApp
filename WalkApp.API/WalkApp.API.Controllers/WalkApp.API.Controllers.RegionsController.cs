@@ -83,7 +83,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         //Post: https://localhost:7204/api/region/create_region
         [HttpPost]
         [Route("create_region")]
-        [ModelStateAttribute]
+        [ModelState]
         public async Task<IActionResult> CreateRegion([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
 
@@ -115,12 +115,12 @@ namespace WalkApp.API.WalkApp.API.Controllers
             //Return Dto back to client
             return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
         }
-        
+
         //Update Region
         //PUT: https://localhost:7204/api/region/update_region/id
         [HttpPut]
         [Route("update_region/{id:Guid}")]
-        [ModelStateAttribute]
+        [ModelState]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
 
