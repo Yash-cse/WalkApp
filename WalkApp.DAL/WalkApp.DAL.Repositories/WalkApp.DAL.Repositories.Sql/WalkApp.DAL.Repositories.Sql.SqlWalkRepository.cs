@@ -15,7 +15,8 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
         }
 
         public async Task<List<Walks>> GetAllWalkAsync(string? filterOn = null, string? filterQuery = null,
-                                                       string? sortBy = null, bool isAscending = true)
+                                                       string? sortBy = null, bool isAscending = true,
+                                                       int pageNumber = 1, int pageSize = 100)
         {
             //return await _dbContext.Walks.Include("Region").Include("Difficulty").ToListAsync();
             var Walks = _dbContext.Walks.Include("Region").Include("Difficulty").AsQueryable();
@@ -55,8 +56,11 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
                 }
             }
 
+            //Pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+
             //Return
-            return await Walks.ToListAsync();
+            return await Walks.Skip(skipResults).Take(pageSize).ToListAsync();
         }
 
         public async Task<Walks> GetWalkByIDAsync(Guid id)

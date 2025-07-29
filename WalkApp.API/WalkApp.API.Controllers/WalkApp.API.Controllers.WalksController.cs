@@ -27,10 +27,12 @@ namespace WalkApp.API.WalkApp.API.Controllers
         [Route("get_all_walks")]
         [HttpGet]
         public async Task<IActionResult> GetAllWalks([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
-                                                     [FromQuery] string? sortBy,   [FromQuery] bool? isAscending)
+                                                     [FromQuery] string? sortBy,   [FromQuery] bool? isAscending,
+                                                     [FromQuery] int pageSize = 1, [FromQuery] int pageNumber = 100)
         {
             //Get data from domain 
-            var WalkDomain = await _walkRepository.GetAllWalkAsync(filterOn, filterQuery,sortBy, isAscending ?? true);
+            var WalkDomain = await _walkRepository.GetAllWalkAsync(filterOn, filterQuery,sortBy, 
+                                                                   isAscending ?? true, pageNumber,pageSize);
 
             //Map Domain to DTO
             var WalkDto = _mapper.Map<List<WalkDto>>(WalkDomain);
