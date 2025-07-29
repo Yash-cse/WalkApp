@@ -4,6 +4,7 @@ using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.AddRequest;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.New;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.UpdateRequest;
+using WalkApp.Domain.WalkApp.Domain.Validators;
 using Region = WalkApp.Domain.WalkApp.Domain.Models.Region;
 
 namespace WalkApp.API.WalkApp.API.Controllers
@@ -82,8 +83,10 @@ namespace WalkApp.API.WalkApp.API.Controllers
         //Post: https://localhost:7204/api/region/create_region
         [HttpPost]
         [Route("create_region")]
+        [ModelStateAttribute]
         public async Task<IActionResult> CreateRegion([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
+
             //Map or convert DTO TO DOMAIN MODEL
             /* var regionDomain = new Region {
                 Code = addRegionRequestDto.Code,
@@ -110,15 +113,17 @@ namespace WalkApp.API.WalkApp.API.Controllers
 
 
             //Return Dto back to client
-            return CreatedAtAction(nameof(GetRegionById), new {id = regionDto.Id}, regionDto);
+            return CreatedAtAction(nameof(GetRegionById), new { id = regionDto.Id }, regionDto);
         }
-
+        
         //Update Region
         //PUT: https://localhost:7204/api/region/update_region/id
         [HttpPut]
         [Route("update_region/{id:Guid}")]
+        [ModelStateAttribute]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
+
             //Map Dto to domain model
             /* var regionDomain = new Region
             {

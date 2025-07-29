@@ -5,6 +5,7 @@ using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.AddRequest;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.New;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.UpdateRequest;
 using WalkApp.Domain.WalkApp.Domain.Models;
+using WalkApp.Domain.WalkApp.Domain.Validators;
 
 namespace WalkApp.API.WalkApp.API.Controllers
 {
@@ -57,6 +58,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         // POST: https://localhost:7204/api/walk/create_walk
         [HttpPost]
         [Route("create_walk")]
+        [ModelStateAttribute]
         public async Task<IActionResult> CreateWalk([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
             // Map DTO to domain model
@@ -72,9 +74,10 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         // Update Walk
-        //PUT: https://localhost:7204/api/walk/update_walk/id
+        //PUT: https://localhost:7204/api/walk/update_walk/id 
         [HttpPut]
         [Route("update_walk/{id:Guid}")]
+        [ModelStateAttribute]
         public async Task<IActionResult> UpdateWalk([FromRoute] Guid id, [FromBody] UpdateWalkRequestDto updateWalkRequest)
         {
             //Getting data from dto to domain
