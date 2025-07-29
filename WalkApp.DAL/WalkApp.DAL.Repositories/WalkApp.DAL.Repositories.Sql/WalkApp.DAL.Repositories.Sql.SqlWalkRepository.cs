@@ -14,7 +14,8 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
             _dbContext = dbContext;
         }
 
-        public async Task<List<Walks>> GetAllWalkAsync(string? filterOn = null, string? filterQuery = null)
+        public async Task<List<Walks>> GetAllWalkAsync(string? filterOn = null, string? filterQuery = null,
+                                                       string? sortBy = null, bool isAscending = true)
         {
             //return await _dbContext.Walks.Include("Region").Include("Difficulty").ToListAsync();
             var Walks = _dbContext.Walks.Include("Region").Include("Difficulty").AsQueryable();
@@ -22,14 +23,17 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
             //filtering the data 
             if(string.IsNullOrWhiteSpace(filterOn)==false && string.IsNullOrWhiteSpace(filterQuery)==false)
             {
+                //Name
                 if(filterOn.Equals("name", StringComparison.OrdinalIgnoreCase))
                 {
                     Walks = Walks.Where(x => x.Name.Contains(filterQuery));
                 }
+                //Description
                 else if (filterOn.Equals("Description", StringComparison.OrdinalIgnoreCase))
                 {
                     Walks = Walks.Where(x => x.Description.Contains(filterQuery));
                 }
+                //LengthInKm
                 else if (filterOn.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
                 {
                     if(double.TryParse(filterQuery, out double length))
@@ -38,7 +42,20 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
                     }
                 }
             }
+            //Sorting
+            if(string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+                if(sortBy.Equals("name", StringComparison.OrdinalIgnoreCase))
+                {
+                    Walks = isAscending ? Walks.OrderBy(x => x.Name): Walks.OrderByDescending(x => x.Name); 
+                }
+                else if (sortBy.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
+                {
+                    Walks = isAscending ? Walks.OrderBy(x => x.LengthInKm) : Walks.OrderByDescending(x => x.LengthInKm);
+                }
+            }
 
+            //Return
             return await Walks.ToListAsync();
         }
 
