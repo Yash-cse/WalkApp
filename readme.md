@@ -52,8 +52,24 @@ Database <-- 	Repository 	<--		Controller
 #### Step 12 :- API/Walks Controller 
 => Seeding Data using EF core and adding crud operations to the Walks Controller. 
 
+#### Step 13 :- Navigation properties using EF Core.
+=> Allow to navigate from one entity to another.
 
+#### Step 14 :- Model Validation
+=> Model Validation Attribute is used to check if the data is valid for the client request.
 
+#### Advance Features.
+#### Step 15 :- Filtering Data
+=> To filter data using filter parameters in the repository and controller.
+
+#### Step 16 :- Sorting Data
+=> Sort data in order by Asscending and decending.
+
+#### Step 17 :- Pagination 
+=> It is use to limit the amount of data to the client request. 
+=> It allows data to break into small parts like Index section in a book.
+
+#### Step 18 :-
 
 
 
