@@ -83,5 +83,5 @@ Database <-- 	Repository 	<--		Controller
 => Inject DbContext and Identity (Asp.Net Core Identity).
 => Run EF-Core Migration.
 
-### 	Reader				Writer(Admin)
-### 	|GET|			      |POST|PUT|DELETE|	
+### 	Reader   |   Writer(Admin)
+### 	 GET     |  POST|PUT|DELETE	
