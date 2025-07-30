@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.AddRequest;
@@ -11,6 +12,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
 {
     [ApiController]
     [Route("api/region")]
+    [Authorize]
     public class RegionApiController : ControllerBase
     {
         // private readonly WalkAppDbContext _context;

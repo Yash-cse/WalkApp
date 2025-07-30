@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using WalkApp.DAL.WalkApp.DAL.Data;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql;
 using WalkApp.Domain.WalkApp.Domain.Profiles;
-
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,15 +20,31 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WalkAppDbContext>(Opt =>
 Opt.UseSqlServer(builder.Configuration.GetConnectionString("WalkAppConnectionString")));
 
+//Auth DbContext injection
+builder.Services.AddDbContext<WalkAppAuthDbContext>(opt =>
+opt.UseSqlServer(builder.Configuration.GetConnectionString("WalkAppAuthConnectionString")));
+
 // Repositories 
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SqlWalkRepository>();
 builder.Services.AddScoped<IDifficultyRepository, SqlDifficultyRepository>();
 
-
 // Automapper
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MainAutoMapper>());
 
+//Autherntication JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    });
 
 
 var app = builder.Build();
@@ -39,6 +57,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//Authentication 
+app.UseAuthentication();
 
 app.UseAuthorization();
 
