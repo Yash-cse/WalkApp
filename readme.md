@@ -58,18 +58,28 @@ Database <-- 	Repository 	<--		Controller
 #### Step 14 :- Model Validation
 => Model Validation Attribute is used to check if the data is valid for the client request.
 
-#### Advance Features.
-#### Step 15 :- Filtering Data
+#### Step 15 :- Advance Features.
+##### 1 :- Filtering Data
 => To filter data using filter parameters in the repository and controller.
 
-#### Step 16 :- Sorting Data
+##### 2 :- Sorting Data
 => Sort data in order by Asscending and decending.
 
-#### Step 17 :- Pagination 
+##### 3 :- Pagination 
 => It is use to limit the amount of data to the client request. 
 => It allows data to break into small parts like Index section in a book.
 
-#### Step 18 :-
+#### Step 16 :- JWT Tokens (Authentication & Authorization)
+##### 1 :- Authentication
+=> By authentication we can determine user identity using username and password. Which helps to check the trust of user.
 
+##### 2 :- Authorization
+=> By authorization user gets permision using rules, policy & claims. it also checks if the user has readonly role or readwrite role.
 
+##### 3 :- Register & Login with roles.
+=> Setting up auth Database.
+=> Create new connection string.
+=> Create new DbContext with roles to seed data.
+=> Inject DbContext and Identity (Asp.Net Core Identity).
+=> Run EF-Core Migration.
 
