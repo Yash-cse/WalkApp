@@ -83,3 +83,15 @@ Database <-- 	Repository 	<--		Controller
 => Inject DbContext and Identity (Asp.Net Core Identity).
 => Run EF-Core Migration.
 
+#### Step 17 :- DAL/Repository & API/Token Controller 
+##### Updated the methods, controller, repositories and interface.
+=> Added the DI to the main program.
+=> Updated the JWT security web token.
+=> It is use for authorization and not for authentication.
+=> Updated the Interface and Repositories layers for more secure Tokens.
+=> Updated the token controller for registering and login new api request and roles (reader and writer).
+
+
+
+
+
