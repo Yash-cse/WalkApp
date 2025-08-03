@@ -22,10 +22,10 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
             var Walks = _dbContext.Walks.Include("Region").Include("Difficulty").AsQueryable();
 
             //filtering the data 
-            if(string.IsNullOrWhiteSpace(filterOn)==false && string.IsNullOrWhiteSpace(filterQuery)==false)
+            if (string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
             {
                 //Name
-                if(filterOn.Equals("name", StringComparison.OrdinalIgnoreCase))
+                if (filterOn.Equals("name", StringComparison.OrdinalIgnoreCase))
                 {
                     Walks = Walks.Where(x => x.Name.Contains(filterQuery));
                 }
@@ -37,18 +37,18 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
                 //LengthInKm
                 else if (filterOn.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
                 {
-                    if(double.TryParse(filterQuery, out double length))
+                    if (double.TryParse(filterQuery, out double length))
                     {
                         Walks = Walks.Where(x => x.LengthInKm <= length);
                     }
                 }
             }
             //Sorting
-            if(string.IsNullOrWhiteSpace(sortBy) == false)
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
             {
-                if(sortBy.Equals("name", StringComparison.OrdinalIgnoreCase))
+                if (sortBy.Equals("name", StringComparison.OrdinalIgnoreCase))
                 {
-                    Walks = isAscending ? Walks.OrderBy(x => x.Name): Walks.OrderByDescending(x => x.Name); 
+                    Walks = isAscending ? Walks.OrderBy(x => x.Name) : Walks.OrderByDescending(x => x.Name);
                 }
                 else if (sortBy.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
                 {
@@ -65,7 +65,7 @@ namespace WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql
 
         public async Task<Walks> GetWalkByIDAsync(Guid id)
         {
-          return  await _dbContext.Walks.Include("Region").Include("Difficulty").FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Walks.Include("Region").Include("Difficulty").FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Walks> CreateWalkAsync(Walks CreateWalk)

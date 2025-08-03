@@ -6,12 +6,13 @@ using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql;
 using WalkApp.Domain.WalkApp.Domain.Profiles;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,6 +29,7 @@ opt.UseSqlServer(builder.Configuration.GetConnectionString("WalkAppAuthConnectio
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SqlWalkRepository>();
 builder.Services.AddScoped<IDifficultyRepository, SqlDifficultyRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 // Automapper
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MainAutoMapper>());
@@ -43,8 +45,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     });
+
+//Setting up Identity
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("WalkApp")
+    .AddEntityFrameworkStores<WalkAppAuthDbContext>()
+    .AddDefaultTokenProviders();
+
+//Setting up Identity Options
+builder.Services.Configure<IdentityOptions>(Opt =>
+{
+    Opt.Password.RequireDigit = false;
+    Opt.Password.RequireLowercase = false;
+    Opt.Password.RequireNonAlphanumeric = false;
+    Opt.Password.RequireUppercase = false;
+    Opt.Password.RequiredLength = 6;
+    Opt.Password.RequiredUniqueChars = 1;
+});
 
 
 var app = builder.Build();
@@ -60,7 +81,6 @@ app.UseHttpsRedirection();
 
 //Authentication 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();

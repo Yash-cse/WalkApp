@@ -37,6 +37,6 @@ namespace WalkApp.DAL.WalkApp.DAL.Data
 
             builder.Entity<IdentityRole>().HasData(roles);
         }
-        
+
     }
 }
