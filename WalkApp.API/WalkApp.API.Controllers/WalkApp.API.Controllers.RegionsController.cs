@@ -27,9 +27,10 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         // Get All Regions 
-        // GET: https://localhost:7204/api/region/get_all_regions
+        // GET: https://localhost:7204/api/region/get_all_regions 
         [HttpGet]
         [Route("get_all_regions")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAllRegions()
         {
             //Get data from DB - core models
@@ -58,6 +59,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         // GET: https://localhost:7204/api/region/get_region/id
         [HttpGet]
         [Route("get_region/{id:Guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetRegionById([FromRoute] Guid id)
         {
             //var regions = _context.Regions.Find(id);
@@ -86,6 +88,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         [HttpPost]
         [Route("create_region")]
         [ModelState]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateRegion([FromBody] AddRegionRequestDto addRegionRequestDto)
         {
 
@@ -123,6 +126,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         [HttpPut]
         [Route("update_region/{id:Guid}")]
         [ModelState]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
 
@@ -162,6 +166,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         //DELETE: https://localhost:7204/api/region/delete_region/id
         [HttpDelete]
         [Route("delete_region/{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             //Check if the region exists

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.AddRequest;
+using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.New;
 
 namespace WalkApp.API.WalkApp.API.Controllers
 {
@@ -9,14 +11,16 @@ namespace WalkApp.API.WalkApp.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepository _tokenRepository;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
 
         //Registering new request
-        //POST: api/auth/register
+        //POST: https://localhost:7204/api/auth/new_user_registration
         [HttpPost]
         [Route("new_user_registration")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
@@ -46,7 +50,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         //Login request
-        //POST: api/auth/login
+        //POST: https://localhost:7204/api/auth/registered_user_login
         [HttpPost]
         [Route("registered_user_login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
@@ -59,10 +63,24 @@ namespace WalkApp.API.WalkApp.API.Controllers
 
                 if (CheckPasswordResult)
                 {
-                    // Create Token
-                    return Ok();
+                    //Get roles for this user
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    if (roles != null)
+                    {
+                        // Create Token
+                        var jwtToken = _tokenRepository.CreateJwtToken(user, roles.ToList());
+
+                        var response = new LoginResponseDto
+                        {
+                            JwtToken = jwtToken
+                        };
+
+                        return Ok(response);
+                    }
                 }
             }
+
             return BadRequest("Incorrect username or password");
         }
     }

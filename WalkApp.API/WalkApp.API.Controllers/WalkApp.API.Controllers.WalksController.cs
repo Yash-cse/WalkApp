@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.AddRequest;
@@ -9,8 +10,9 @@ using WalkApp.Domain.WalkApp.Domain.Validators;
 
 namespace WalkApp.API.WalkApp.API.Controllers
 {
-    [Route("api/walk")]
     [ApiController]
+    [Route("api/walk")]
+    [Authorize]
     public class WalkApiController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -23,9 +25,9 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         //GET All
-        //GET: https://localhost:7204/api/walk
-        [Route("get_all_walks")]
+        //GET: https://localhost:7204/api/get_all_walks
         [HttpGet]
+        [Route("get_all_walks")]
         public async Task<IActionResult> GetAllWalks([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
                                                      [FromQuery] string? sortBy,   [FromQuery] bool? isAscending,
                                                      [FromQuery] int pageSize = 1, [FromQuery] int pageNumber = 100)
@@ -43,8 +45,8 @@ namespace WalkApp.API.WalkApp.API.Controllers
 
         //GET By ID
         //GET: https://localhost:7204/api/walk/get_walk/id
-        [Route("get_walk/{id:Guid}")]
         [HttpGet]
+        [Route("get_walk/{id:Guid}")]
         public async Task<IActionResult> GetWalkById([FromRoute] Guid id)
         {
             //Get data from domain 

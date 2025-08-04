@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.Domain.WalkApp.Domain.DTO.WalkApp.Domain.DTO.New;
 
 namespace WalkApp.API.WalkApp.API.Controllers
 {
-    [Route("api/difficulty")]
     [ApiController]
+    [Route("api/difficulty")]
+    [Authorize]
     public class DifficultyApiController : ControllerBase
     {
         private readonly IMapper _mapper;
