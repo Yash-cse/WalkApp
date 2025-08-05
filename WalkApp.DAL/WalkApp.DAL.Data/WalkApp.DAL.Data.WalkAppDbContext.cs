@@ -12,6 +12,7 @@ namespace WalkApp.DAL.WalkApp.DAL.Data
         public DbSet<Difficulty> Difficulties { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Walks> Walks { get; set; }
+        public DbSet<Image> Images { get; set; }
 
     }
 }

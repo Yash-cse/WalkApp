@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WalkApp.DAL.WalkApp.DAL.Data;
 
@@ -11,9 +12,10 @@ using WalkApp.DAL.WalkApp.DAL.Data;
 namespace WalkApp.DAL.Migrations
 {
     [DbContext(typeof(WalkAppDbContext))]
-    partial class WalkAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250805095824_Image Data")]
+    partial class ImageData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
