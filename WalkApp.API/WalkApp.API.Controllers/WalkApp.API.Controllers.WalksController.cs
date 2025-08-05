@@ -25,16 +25,17 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         //GET All
-        //GET: https://localhost:7204/api/get_all_walks
+        //GET: https://localhost:7204/api/walk/get_all_walks
         [HttpGet]
         [Route("get_all_walks")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAllWalks([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
-                                                     [FromQuery] string? sortBy,   [FromQuery] bool? isAscending,
+                                                     [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
                                                      [FromQuery] int pageSize = 1, [FromQuery] int pageNumber = 100)
         {
             //Get data from domain 
-            var WalkDomain = await _walkRepository.GetAllWalkAsync(filterOn, filterQuery,sortBy, 
-                                                                   isAscending ?? true, pageNumber,pageSize);
+            var WalkDomain = await _walkRepository.GetAllWalkAsync(filterOn, filterQuery, sortBy,
+                                                                   isAscending ?? true, pageNumber, pageSize);
 
             //Map Domain to DTO
             var WalkDto = _mapper.Map<List<WalkDto>>(WalkDomain);

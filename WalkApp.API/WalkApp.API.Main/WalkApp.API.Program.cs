@@ -1,29 +1,60 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 using WalkApp.DAL.WalkApp.DAL.Data;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Interface;
 using WalkApp.DAL.WalkApp.DAL.Repositories.WalkApp.DAL.Repositories.Sql;
 using WalkApp.Domain.WalkApp.Domain.Profiles;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//Adding authorization in the swagger
+builder.Services.AddSwaggerGen(Opt =>
+{
+    Opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Walk App API", Version = "v1" });
+    Opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the reader and writer role",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "Jwt"
+    });
+
+    Opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "Bearer",
+                Name = "Authorization",
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+});
 
 // ConnectionString using DI
 builder.Services.AddDbContext<WalkAppDbContext>(Opt =>
 Opt.UseSqlServer(builder.Configuration.GetConnectionString("WalkAppConnectionString")));
 
 //Auth DbContext injection
-builder.Services.AddDbContext<WalkAppAuthDbContext>(opt =>
-opt.UseSqlServer(builder.Configuration.GetConnectionString("WalkAppAuthConnectionString")));
+builder.Services.AddDbContext<WalkAppAuthDbContext>(Opt =>
+Opt.UseSqlServer(builder.Configuration.GetConnectionString("WalkAppAuthConnectionString")));
 
 // Repositories 
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
@@ -36,8 +67,8 @@ builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MainAutoMapper>());
 
 //Autherntication JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(opt =>
-    opt.TokenValidationParameters = new TokenValidationParameters
+    .AddJwtBearer(Opt =>
+    Opt.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
@@ -66,7 +97,6 @@ builder.Services.Configure<IdentityOptions>(Opt =>
     Opt.Password.RequiredLength = 6;
     Opt.Password.RequiredUniqueChars = 1;
 });
-
 
 var app = builder.Build();
 

@@ -21,7 +21,7 @@ namespace WalkApp.API.WalkApp.API.Controllers
         }
 
         //Get All difficulty
-        //GET: 
+        //GET: https://localhost:7204/api/difficulty/get_all_difficulty
         [HttpGet]
         [Route("get_all_difficulty")]
         public async Task<IActionResult> GetAll()
